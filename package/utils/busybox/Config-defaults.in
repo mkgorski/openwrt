@@ -2479,16 +2479,16 @@ config BUSYBOX_DEFAULT_UDPSVD
 	default n
 config BUSYBOX_DEFAULT_TELNET
 	bool
-	default n
+	default y
 config BUSYBOX_DEFAULT_FEATURE_TELNET_TTYPE
 	bool
-	default n
+	default y
 config BUSYBOX_DEFAULT_FEATURE_TELNET_AUTOLOGIN
 	bool
-	default n
+	default y
 config BUSYBOX_DEFAULT_FEATURE_TELNET_WIDTH
 	bool
-	default n
+	default y
 config BUSYBOX_DEFAULT_TELNETD
 	bool
 	default n
