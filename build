@@ -1,0 +1,4 @@
+#!/bin/sh
+
+./prepare "$@" &&
+make -j4 IGNORE_ERRORS="n m" BUILD_LOG=1 BUILD_LOG_DIR=bin/logs
