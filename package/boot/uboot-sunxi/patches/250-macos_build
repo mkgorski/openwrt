@@ -1,0 +1,45 @@
+Index: u-boot-2019.01/include/compiler.h
+===================================================================
+--- u-boot-2019.01.orig/include/compiler.h
++++ u-boot-2019.01/include/compiler.h
+@@ -58,6 +58,11 @@ typedef unsigned long ulong;
+ # define __BYTE_ORDER BYTE_ORDER
+ # define __LITTLE_ENDIAN LITTLE_ENDIAN
+ # define __BIG_ENDIAN BIG_ENDIAN
++#elif defined( __APPLE__)
++# include <endian.h>
++# define __BYTE_ORDER BYTE_ORDER
++# define __LITTLE_ENDIAN LITTLE_ENDIAN
++# define __BIG_ENDIAN BIG_ENDIAN
+ #endif
+ 
+ #include <time.h>
+Index: u-boot-2019.01/lib/bch.c
+===================================================================
+--- u-boot-2019.01.orig/lib/bch.c
++++ u-boot-2019.01/lib/bch.c
+@@ -70,7 +70,15 @@
+ #include <string.h>
+ 
+ #undef cpu_to_be32
++#if !defined(__APPLE__)
+ #define cpu_to_be32 htobe32
++#else
++#define cpu_to_be32(x) \
++	((((x) & 0xff000000) >> 24) | \
++	 (((x) & 0x00ff0000) >>  8) | \
++	 (((x) & 0x0000ff00) <<  8) | \
++	 (((x) & 0x000000ff) << 24))
++#endif
+ #define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
+ #define kmalloc(size, flags)	malloc(size)
+ #define kzalloc(size, flags)	calloc(1, size)
+@@ -116,7 +124,7 @@ struct gf_poly_deg1 {
+ };
+ 
+ #ifdef USE_HOSTCC
+-#if !defined(__DragonFly__) && !defined(__FreeBSD__)
++#if !defined(__DragonFly__) && !defined(__FreeBSD__) && !defined(__APPLE__)
+ static int fls(int x)
+ {
+ 	int r = 32;
