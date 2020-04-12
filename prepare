@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+  if [ ! -z "$(which fzf)" ]; then
+    SEED_FILE=$(find . -name '*.seed' -maxdepth 1 | fzf --height 15 --preview 'head -5 {}' --preview-window down:5)
+  fi
+else
+  SEED_FILE=$1
+fi
+if [ ! -e "$SEED_FILE" ]; then
+  cat <<EOF
+Usage:
+  $0 config_seed
+EOF
+  exit 2
+fi
+
+./scripts/feeds update &&
+./scripts/feeds install -a &&
+cp "$SEED_FILE" .config &&
+make defconfig
