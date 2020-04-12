@@ -1,0 +1,9 @@
+CONFIG_TARGET_sunxi=y
+CONFIG_TARGET_sunxi_cortexa7=y
+CONFIG_TARGET_MULTI_PROFILE=y
+CONFIG_TARGET_DEVICE_sunxi_cortexa7_DEVICE_xunlong_orangepi-zero=y
+CONFIG_TARGET_DEVICE_PACKAGES_sunxi_cortexa7_DEVICE_xunlong_orangepi-zero=""
+CONFIG_TARGET_PER_DEVICE_ROOTFS=y
+
+CONFIG_PACKAGE_proto-orangepizero=y
+CONFIG_KERNEL_DEVMEM=y
