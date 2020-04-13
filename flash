@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [ -z "$(which fzf)" ]; then
+  echo "fzf needs to be installed"
+  exit 3
+fi
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+if [ $# -lt 1 ]; then
+  IMG_FILE=$(find bin/targets -name '*sdcard.img.gz' -maxdepth 3 | fzf --height 15 )
+else
+  IMG_FILE=$1
+fi
+
+if [ "${IMG_FILE##*.}" = "gz" ]; then
+  gunzip -kf "$IMG_FILE"
+  IMG_FILE="${IMG_FILE%%.gz}"
+fi
+
+DEV=$(ls -r /dev/rdisk* | grep 'rdisk[2-9]$' | fzf --height 20 --preview 'diskutil info {} | grep -E "Media Name|Protocol|Size"' --preview-window down:10)
+DEVSIZE=$(diskutil info "$DEV" | grep -oE '\(\d+ Bytes\)' | grep -oE '\d+')
+if [ -z "$DEVSIZE" ]; then
+  echo "Failed to extract disk size. Aborting..."
+  exit 4
+fi
+
+if [ "$DEVSIZE" -gt 16000000000 ]; then
+  read -r -p "Disk is quite large. Are you sure you want to overwrite it? [y/N]: " response
+  if [[ "$response" =~ ^[yY]$ ]]
+  then
+    true
+  else
+    echo "Aborted."
+    exit 5
+  fi
+fi
+
+echo "Writing ${bold}${IMG_FILE##*/}${normal} to ${bold}${DEV}${normal}"
+diskutil unmountDisk "$DEV"
+sudo dd if="$IMG_FILE" of="$DEV" bs=512k
+sync
+diskutil eject "$DEV"
