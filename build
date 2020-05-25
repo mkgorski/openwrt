@@ -1,4 +1,5 @@
 #!/bin/sh
 
+export GIT_SSH_COMMAND="ssh -i ~/.ssh/bitbucket_rsa -o 'IdentitiesOnly=yes' "
 ./prepare "$@" &&
 make -j4 IGNORE_ERRORS="n m" BUILD_LOG=1 BUILD_LOG_DIR=bin/logs
