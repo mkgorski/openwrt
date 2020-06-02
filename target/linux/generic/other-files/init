@@ -1,14 +1,14 @@
 #!/bin/sh
-# Copyright (C) 2006 OpenWrt.org
-export INITRAMFS=1
 
-# switch to tmpfs to allow run daemons in jail on initramfs boot
-DIRS=$(echo *)
-NEW_ROOT=/new_root
+mount -t proc proc /proc
+mount -t sysfs none /sys
 
-mkdir -p $NEW_ROOT
-mount -t tmpfs tmpfs $NEW_ROOT
+mknod /dev/mmcblk0 b 179 0
+mknod /dev/mmcblk0p3 b 179 3
+mknod /dev/mmcblk0p4 b 179 4
 
-cp -pr $DIRS $NEW_ROOT
-
-exec switch_root $NEW_ROOT /sbin/init
+mknod /dev/btrfs-control c 10 234
+btrfs device scan
+mount -t btrfs /dev/mmcblk0p3 /mnt
+cd /mnt
+exec switch_root /mnt /sbin/init
