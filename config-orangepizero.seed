@@ -5,5 +5,8 @@ CONFIG_TARGET_DEVICE_sunxi_cortexa7_DEVICE_xunlong_orangepi-zero=y
 CONFIG_TARGET_DEVICE_PACKAGES_sunxi_cortexa7_DEVICE_xunlong_orangepi-zero=""
 CONFIG_TARGET_PER_DEVICE_ROOTFS=y
 
+CONFIG_PACKAGE_kmod-fs-btrfs=y
+CONFIG_PACKAGE_btrfs-progs=y
+
 CONFIG_PACKAGE_proto-orangepizero=y
 CONFIG_KERNEL_DEVMEM=y
