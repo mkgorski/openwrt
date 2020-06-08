@@ -9,6 +9,8 @@ mknod /dev/mmcblk0p4 b 179 4
 
 mknod /dev/btrfs-control c 10 234
 btrfs device scan
-mount -t btrfs /dev/mmcblk0p3 /mnt
+if ! mount -t btrfs /dev/mmcblk0p3 /mnt; then
+  exec /bin/busybox sh
+fi
 cd /mnt
 exec switch_root /mnt /sbin/init
