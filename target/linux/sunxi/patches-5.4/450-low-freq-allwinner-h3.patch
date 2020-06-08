@@ -1,0 +1,17 @@
+Index: linux-5.4.42/arch/arm/boot/dts/sun8i-h3.dtsi
+===================================================================
+--- linux-5.4.42.orig/arch/arm/boot/dts/sun8i-h3.dtsi
++++ linux-5.4.42/arch/arm/boot/dts/sun8i-h3.dtsi
+@@ -47,6 +47,12 @@
+ 		compatible = "operating-points-v2";
+ 		opp-shared;
+ 
++		opp@480000000 {
++			opp-hz = /bits/ 64 <480000000>;
++			opp-microvolt = <980000 980000 1300000>;
++			clock-latency-ns = <244144>; /* 8 32k periods */
++		};
++
+ 		opp-648000000 {
+ 			opp-hz = /bits/ 64 <648000000>;
+ 			opp-microvolt = <1040000 1040000 1300000>;
