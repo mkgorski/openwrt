@@ -35,6 +35,17 @@ define U-Boot/nanopi-r2s-rk3328
   OF_PLATDATA:=$(1)
 endef
 
+define U-Boot/orangepi-r1plus-rk3328
+  BUILD_SUBTARGET:=armv8
+  NAME:=OrangePi R1Plus
+  BUILD_DEVICES:= \
+    xunlong_orangepi-r1plus
+  DEPENDS:=+PACKAGE_u-boot-orangepi-r1plus-rk3328:arm-trusted-firmware-rockchip
+  PKG_BUILD_DEPENDS:=arm-trusted-firmware-rockchip
+  ATF:=rk3328_bl31.elf
+  OF_PLATDATA:=$(1)
+endef
+
 
 # RK3399 boards
 
